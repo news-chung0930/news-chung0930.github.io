@@ -1,114 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>666新聞台訂閱</title>
-    <!-- 引入 OneSignal SDK (v16) -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(function(OneSignal) {
-            OneSignal.init({
-                appId: "5e5d3d3c-5491-46fa-a637-9d9663fe98cc",
-                allowLocalhostAsSecureOrigin: true // 增加本地調試兼容性
-            });
-            
-            // 進入頁面即嘗試調起權限請求
-            OneSignal.Slidedown.promptPush();
-        });
-
-        // 點擊按鈕直接要求權限
-        function directSubscribe() {
-            window.OneSignalDeferred.push(function(OneSignal) {
-                // 如果已經訂閱過，OneSignal 會自動處理
-                OneSignal.Slidedown.promptPush();
-            });
-        }
-    </script>
-    <style>
-        /* 基礎佈局：確保在任何螢幕都置中 */
-        body { 
-            font-family: "Microsoft JhengHei", sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            background: #f0f2f5; 
-            margin: 0; 
-            padding: 15px;
-            box-sizing: border-box;
-        }
-
-        /* 簡潔的白色區塊，寬度隨螢幕縮放 */
-        .box { 
-            background: #fff; 
-            padding: 40px 20px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-            width: 100%; 
-            max-width: 480px; 
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        /* 標題變大 */
-        h1 { 
-            font-size: 32px; 
-            color: #333; 
-            margin: 0 0 20px 0; 
-            font-weight: 900;
-        }
-
-        /* 說明文字清晰 */
-        p { 
-            font-size: 18px; 
-            color: #555; 
-            line-height: 1.6; 
-            margin-bottom: 30px; 
-        }
-
-        /* 巨大化按鈕：穩紮穩打的紅色 */
-        .big-btn { 
-            width: 100%; 
-            padding: 25px; 
-            background: #ff4757; 
-            color: white; 
-            border: none; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-size: 24px; 
-            font-weight: bold; 
-            transition: background 0.2s;
-            box-sizing: border-box;
-        }
-
-        .big-btn:hover { 
-            background: #ff6b81; 
-        }
-
-        .big-btn:active {
-            background: #e04050;
-            transform: scale(0.98);
-        }
-
-        /* 手機端微調 */
-        @media (max-width: 480px) {
-            h1 { font-size: 28px; }
-            .big-btn { font-size: 20px; padding: 20px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "5e5d3d3c-5491-46fa-a637-9d9663fe98cc",
+      allowLocalhostAsSecureOrigin: true, // 增加相容性
+    });
+    
+    // 強制在進入頁面時要求權限
+    OneSignal.Notifications.requestPermission();
+  });
+</script>
 </head>
 <body>
-
-<div class="box">
-    <h1>666新聞台</h1>
-    <p>點擊下方按鈕後，請在彈出的視窗選擇「允許」，即可完成訂閱。</p>
-    
-    <!-- 直覺、大面積、一鍵觸發 -->
-    <button class="big-btn" onclick="directSubscribe()">🚀 立即訂閱新聞速報</button>
-</div>
-
-</body>
-</html>
-
