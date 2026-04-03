@@ -3,128 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>666新聞台 - 專屬訂閱</title>
-    
-    <!-- 引入最新版 OneSignal SDK (v16) -->
+    <title>666新聞台訂閱</title>
+    <!-- 引入 OneSignal SDK (v16) -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
-      // 確保使用 OneSignal v16 的正確初始化方式
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(function(OneSignal) {
-        OneSignal.init({
-          appId: "5e5d3d3c-5491-46fa-a637-9d9663fe98cc", // 你的專屬 App ID
-          notifyButton: {
-            enable: true, // 在右下角啟用原生小鈴鐺作為備用
-            displayPredicate: function() { return true; }
-          }
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(function(OneSignal) {
+            OneSignal.init({
+                appId: "5e5d3d3c-5491-46fa-a637-9d9663fe98cc",
+                allowLocalhostAsSecureOrigin: true // 增加本地調試兼容性
+            });
+            
+            // 進入頁面即嘗試調起權限請求
+            OneSignal.Slidedown.promptPush();
         });
 
-        // 進站時嘗試自動觸發下拉式訂閱視窗
-        OneSignal.Slidedown.promptPush();
-      });
-
-      // 綁定畫面中間自訂按鈕的點擊事件
-      function triggerSubscribe() {
-        window.OneSignalDeferred.push(function(OneSignal) {
-          // 強制呼叫訂閱視窗
-          OneSignal.Slidedown.promptPush();
-        });
-      }
+        // 點擊按鈕直接要求權限
+        function directSubscribe() {
+            window.OneSignalDeferred.push(function(OneSignal) {
+                // 如果已經訂閱過，OneSignal 會自動處理
+                OneSignal.Slidedown.promptPush();
+            });
+        }
     </script>
-
     <style>
-        /* 基礎自適應彈性佈局，適合被嵌入 iframe 使用 */
+        /* 基礎佈局：確保在任何螢幕都置中 */
         body { 
-            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; 
+            font-family: "Microsoft JhengHei", sans-serif; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             min-height: 100vh; 
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* 質感漸層背景 */
+            background: #f0f2f5; 
             margin: 0; 
-            padding: 20px;
+            padding: 15px;
             box-sizing: border-box;
         }
-        
-        /* 自適應卡片設計 */
-        .subscribe-card { 
-            background: #ffffff; 
-            padding: 40px 30px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+
+        /* 簡潔的白色區塊，寬度隨螢幕縮放 */
+        .box { 
+            background: #fff; 
+            padding: 40px 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
             width: 100%; 
-            max-width: 400px; /* 限制最大寬度保持美觀 */
+            max-width: 480px; 
             text-align: center;
             box-sizing: border-box;
         }
-        
-        .logo-icon {
-            font-size: 50px;
-            margin-bottom: 10px;
-        }
 
+        /* 標題變大 */
         h1 { 
+            font-size: 32px; 
             color: #333; 
-            margin: 0 0 15px 0; 
-            font-size: 26px; 
-            font-weight: bold;
+            margin: 0 0 20px 0; 
+            font-weight: 900;
         }
-        
+
+        /* 說明文字清晰 */
         p { 
-            font-size: 16px; 
-            color: #666; 
-            line-height: 1.5; 
-            margin-bottom: 25px;
-        }
-        
-        /* 巨大且醒目的自訂訂閱按鈕 */
-        .btn-subscribe {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 16px;
-            background: #ff4757;
-            color: #ffffff;
-            font-size: 18px;
-            font-weight: bold;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+            font-size: 18px; 
+            color: #555; 
+            line-height: 1.6; 
+            margin-bottom: 30px; 
         }
 
-        .btn-subscribe:hover {
-            background: #ff6b81;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
+        /* 巨大化按鈕：穩紮穩打的紅色 */
+        .big-btn { 
+            width: 100%; 
+            padding: 25px; 
+            background: #ff4757; 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 24px; 
+            font-weight: bold; 
+            transition: background 0.2s;
+            box-sizing: border-box;
         }
 
-        .btn-subscribe:active {
-            transform: translateY(1px);
+        .big-btn:hover { 
+            background: #ff6b81; 
         }
 
-        /* 手機端字體與間距微調 */
+        .big-btn:active {
+            background: #e04050;
+            transform: scale(0.98);
+        }
+
+        /* 手機端微調 */
         @media (max-width: 480px) {
-            .subscribe-card { padding: 30px 20px; }
-            h1 { font-size: 22px; }
-            p { font-size: 14px; margin-bottom: 20px; }
-            .btn-subscribe { font-size: 16px; padding: 14px; }
+            h1 { font-size: 28px; }
+            .big-btn { font-size: 20px; padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-<div class="subscribe-card">
-    <div class="logo-icon">📡</div>
+<div class="box">
     <h1>666新聞台</h1>
-    <p>為了確保您不會錯過任何最新、最火熱的第一手速報，請立即點擊下方按鈕並選擇「允許」訂閱通知！</p>
+    <p>點擊下方按鈕後，請在彈出的視窗選擇「允許」，即可完成訂閱。</p>
     
-    <!-- 明確的訂閱按鍵 -->
-    <button class="btn-subscribe" onclick="triggerSubscribe()">
-        🔔 點擊開啟訂閱視窗
-    </button>
+    <!-- 直覺、大面積、一鍵觸發 -->
+    <button class="big-btn" onclick="directSubscribe()">🚀 立即訂閱新聞速報</button>
 </div>
 
 </body>
