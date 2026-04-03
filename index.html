@@ -1,23 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "5e5d3d3c-5491-46fa-a637-9d9663fe98cc",
-      allowLocalhostAsSecureOrigin: true, // 增加相容性
-    });
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歡迎收看 666新聞台</title>
     
-    // 強制在進入頁面時要求權限
-    OneSignal.Notifications.requestPermission();
-  });
-</script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignal = window.OneSignal || [];
+      OneSignal.push(function() {
+        OneSignal.init({
+          appId: "5e5d3d3c-5491-46fa-a637-9d9663fe98cc", // 你的 App ID
+          notifyButton: {
+            enable: true, /* 右下角會顯示一個小鈴鐺，方便讀者隨時點擊 */
+          },
+        });
+        
+        // 核心功能：一進網頁就強制彈出訂閱邀請視窗
+        OneSignal.showSlidedownPrompt();
+      });
+    </script>
+
+    <style>
+        /* 基礎自適應滿版背景 */
+        body { 
+            font-family: "Microsoft JhengHei", sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            background: #2c3e50; 
+            color: #fff; 
+            margin: 0; 
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        
+        /* 自適應比例面板 */
+        .card { 
+            background: rgba(255, 255, 255, 0.1); 
+            padding: 35px; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3); 
+            width: 90%; 
+            max-width: 450px; 
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-sizing: border-box;
+        }
+        
+        h1 { color: #f1c40f; margin-bottom: 10px; font-size: 28px; }
+        p { font-size: 16px; color: #ecf0f1; line-height: 1.6; }
+        
+        /* 小螢幕字體自適應微調 */
+        @media (max-width: 480px) {
+            h1 { font-size: 22px; }
+            p { font-size: 14px; }
+        }
+    </style>
 </head>
 <body>
-    <p>666新聞台</p>
-    <button onclick="OneSignal.Notifications.requestPermission()">點我開啟通知</button>
+
+<div class="card">
+    <h1>📺 666新聞台</h1>
+    <p>歡迎來到 666新聞台！<br>進入時請點擊「允許」或彈出視窗中的「訂閱」，這樣才不會漏掉我們的第一手勁爆速報喔！</p>
+</div>
+
 </body>
 </html>
